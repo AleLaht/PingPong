@@ -3,6 +3,7 @@ const ctx = canvas.getContext('2d')
 
 let paddleHeight = 50;
 let paddleWidth = 10;
+let speed = 10;
 
 const ai = {
     width: paddleWidth,
@@ -36,9 +37,6 @@ const drawBall = () => {
     ctx.beginPath();
     ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
     ctx.fill();
-    ball.x = ball.x + ball.velocityX;
-    ball.y = ball.y + ball.velocityY;
-    console.log('asd')
 }
 
 const drawAi = () => {
@@ -53,8 +51,34 @@ const render = () => {
     drawAi();
 }
 
-const play = () => {
-    render()
+const movePlayer = (e) => {
+    switch(e.key) {
+        case 'ArrowDown':
+            player.y += speed;
+            console.log('down')
+            break;
+        case 'ArrowUp':
+            player.y -= speed;
+            break;
+    }
 }
 
-setInterval(play, 100);
+const play = () => {
+
+    // Ball movement
+    ball.x += ball.velocityX;
+    ball.y += ball.velocityY;
+
+    // Change ball direction if it hits floor or ceiling
+    if ((ball.y + ball.radius) >= canvas.height || ball.y - ball.radius <= 0) {
+        ball.velocityY = -ball.velocityY;
+    }
+}
+
+const gameLoop = () => {
+    render()
+    play()
+}
+
+window.addEventListener('keydown', movePlayer)
+setInterval(gameLoop, 30);
