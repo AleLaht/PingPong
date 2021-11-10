@@ -9,14 +9,16 @@ const ai = {
     width: paddleWidth,
     height: paddleHeight,
     x: canvas.width - paddleWidth,
-    y: canvas.height / 2 - paddleHeight / 2
+    y: canvas.height / 2 - paddleHeight / 2,
+    score: 0
 }
 
 const player = {
     width: paddleWidth,
     height: paddleHeight,
     x: 0,
-    y: canvas.height / 2 - paddleHeight / 2
+    y: canvas.height / 2 - paddleHeight / 2,
+    score: 0
 }
 
 const ball = {
@@ -72,6 +74,17 @@ const play = () => {
     // Change ball direction if it hits floor or ceiling
     if ((ball.y + ball.radius) >= canvas.height || ball.y - ball.radius <= 0) {
         ball.velocityY = -ball.velocityY;
+    }
+
+    // Scoring
+    if ((ball.x + ball.radius) >= canvas.width) {
+        ball.x = canvas.width / 2;
+        ball.y = canvas.height / 2;
+        player.score++;
+    } else if ((ball.x + ball.radius) <= 0) {
+        ball.x = canvas.width / 2;
+        ball.y = canvas.height / 2;
+        ai.score++;
     }
 }
 
