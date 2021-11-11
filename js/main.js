@@ -57,7 +57,6 @@ const movePlayer = (e) => {
     switch(e.key) {
         case 'ArrowDown':
             player.y += speed;
-            console.log('down')
             break;
         case 'ArrowUp':
             player.y -= speed;
@@ -68,7 +67,7 @@ const movePlayer = (e) => {
 const play = () => {
 
     // Ball movement
-    ball.x += ball.velocityX;
+    ball.x -= ball.velocityX;
     ball.y += ball.velocityY;
 
     // Change ball direction if it hits floor or ceiling
@@ -86,6 +85,17 @@ const play = () => {
         ball.y = canvas.height / 2;
         ai.score++;
     }
+
+    // Player paddle collision
+    if ((ball.x + ball.radius) <= (0 + player.width) && ball.y >= player.y && (ball.y <= player.y + player.height)) {
+        ball.velocityX = -ball.velocityX;
+    }
+
+    // AI paddle collision
+    if ((ball.x + ball.radius) >= (canvas.width + ai.width) && ball.y >= ai.y && (ball.y <= ai.y + ai.height)) {
+        ball.velocityX = -ball.velocityX;
+    }
+
 }
 
 const gameLoop = () => {
